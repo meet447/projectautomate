@@ -87,7 +87,7 @@
 </body>
 <script>
     function fetchEventStream() {
-        fetch('http://127.0.0.1:5000/api/ytblog/{{ id }}')
+        fetch('/api/ytblog/{{ id }}')
             .then(response => {
                 const reader = response.body.getReader();
                 return new ReadableStream({
