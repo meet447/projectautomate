@@ -35,7 +35,7 @@ def web_yt(id):
 
         json_data = {
             'url': f'https://youtube.com/watch?v={id}',
-            'deviceId': 'sHb6pfPavbCbGUUeniQQL',
+            'deviceId': 'sHb6pfPavbCbJUUeniQQL',
             'idToken': None,
         }
 
@@ -52,7 +52,7 @@ def web_yt(id):
         
         client = Client()
         chat_completion = client.chat.completions.create(
-            model="mixtral-8x7b",
+            model=g4f.models.default,
             messages=[{"role": "user", "content": message}],
             stream=True
         )
