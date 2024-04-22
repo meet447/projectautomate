@@ -44,7 +44,7 @@ def web_yt(id):
         query = response.text
         
         message = '''
-        Generate HTML code with various sections, various paras, headers and more, do not generate css and js only html for the following youtube video transcript by summarising it:
+        Generate HTML code with various sections, various paras, headers and more, do not generate css and js only html for the following youtube video transcript by summarising it also add all the links and extra stuff at the end.:
         
         //////////////////
         {}
@@ -52,7 +52,7 @@ def web_yt(id):
         
         client = Client()
         chat_completion = client.chat.completions.create(
-            model=g4f.models.default,
+            model="mixtral-8x7b",
             messages=[{"role": "user", "content": message}],
             stream=True
         )
@@ -68,8 +68,8 @@ def test_page(id):
     return render_template("blog.html", id=id)
 
 
-@app.route("/generate-site/<model>/<query>")
-def test(model, query):
+@app.route("/generate-site/<query>")
+def test(query):
     def generate_completion():
         message = '''
         Generate HTML and CSS code for a website based on the provided query, incorporating Bootstrap and JavaScript as needed. Ensure the code represents a complete webpage with all features specified in the query. Avoid creating a basic template; instead, provide the entire page's code. Include CSS and JavaScript within the same HTML document. Omit any additional content or instructions beyond generating the code
@@ -78,7 +78,7 @@ def test(model, query):
         
         client = Client()
         chat_completion = client.chat.completions.create(
-            model=model,
+            model="mixtral-8x7b",
             messages=[{"role": "user", "content": message}],
             stream=True
         )
