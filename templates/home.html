@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube URL Redirect</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .input-container {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            border-radius: 20px;
+            border: none;
+            margin: 10px;
+            width: 400px;
+            font-size: 18px;
+        }
+
+        button {
+            padding: 8px 20px;
+            border-radius: 15px;
+            border: none;
+            margin: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="input-container">
+        <h2>Enter YouTube URL</h2>
+        <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL">
+        <button onclick="redirectToURL()">Submit</button>
+    </div>
+
+
+
+    <script>
+        function redirectToURL() {
+            var youtubeUrl = document.getElementById("youtubeUrl").value;
+            var videoId = youtubeUrl.match(/[?&]v=([^&]+)/);
+            if (videoId && videoId.length > 1) {
+                window.location.href = "/generate/"+ videoId[1];
+            } else {
+                alert("Invalid YouTube URL. Please provide a valid YouTube video URL.");
+            }
+        }
+    </script>
+</body>
+</html>

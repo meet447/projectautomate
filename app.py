@@ -7,6 +7,10 @@ import g4f
 
 import g4f.providers
 import requests, time
+
+import random
+import string
+
 #IMPORT END
 
 app = Flask(__name__)
@@ -31,10 +35,16 @@ def web_yt(id):
             'sec-fetch-site': 'same-origin',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
         }
+        
+        def generate_device_id(length=21):
+            chars = string.ascii_letters + string.digits
+            return ''.join(random.choices(chars, k=length))
+
+        device_id = generate_device_id()  
 
         json_data = {
             'url': f'https://youtube.com/watch?v={id}',
-            'deviceId': 'sHb6pfPavbCbJUUeniQQL',
+            'deviceId': device_id,
             'idToken': None,
         }
 
@@ -43,7 +53,7 @@ def web_yt(id):
         query = response.text
         
         message = '''
-        Generate HTML code with various sections, various paras, headers and more, do not generate css and js only html for the following youtube video transcript by summarising it also add all the links and extra stuff at the end.:
+        Generate HTML code with various sections, various paras, headers and more, do not generate css and js only html for the following youtube video transcript into a blog, also add all the links and extra stuff at the end.Only Generate the Code do not include anything else like "Hers your html code" in your response
         
         //////////////////
         {}
@@ -89,7 +99,7 @@ def test_page(id):
 def test(query):
     def generate_completion():
         message = '''
-        Generate HTML and CSS code for a website based on the provided query, incorporating Bootstrap and JavaScript as needed. Ensure the code represents a complete webpage with all features specified in the query. Avoid creating a basic template; instead, provide the entire page's code. Include CSS and JavaScript within the same HTML document. Omit any additional content or instructions beyond generating the code
+        Generate HTML and CSS code for a website based on the provided query, incorporating Bootstrap and JavaScript as needed. Ensure the code represents a complete webpage with all features specified in the query. provide the entire page's code. Make it interactive, Include CSS and JavaScript within the same HTML document. Omit any additional content or instructions beyond generating the code, Only Generate the code do not include anything except code in your response, Do not include something like "Here is the HTML, CSS, and JavaScript code" in your response
         query: {}
         '''.format(query)
         
@@ -124,3 +134,6 @@ def test(query):
     return Response(generate_completion())
 
 
+@app.route("/")
+def index_page():
+   return render_template("home.html")
