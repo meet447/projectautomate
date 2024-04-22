@@ -5,6 +5,7 @@ import g4f.Provider
 from g4f.client import Client
 import g4f
 
+import g4f.providers
 import requests, time
 #IMPORT END
 
@@ -13,9 +14,7 @@ app = Flask(__name__)
 #API ROUTE FOR STREAMING YT TO BLOG STREAM
 @app.route("/api/ytblog/<id>")
 def web_yt(id):
-    
-    model = ""
-    
+        
     def generate_completion():
         
         headers = {
@@ -50,7 +49,25 @@ def web_yt(id):
         {}
         '''.format(query)
         
-        client = Client()
+        client = Client(
+            provider=g4f.Provider.RetryProvider([
+                g4f.Provider.Acytoo,
+                g4f.Provider.You,
+                g4f.Provider.Vercel,
+                g4f.Provider.PerplexityAi,
+                g4f.Provider.PerplexityLabs,
+                g4f.Provider.H2o,
+                g4f.Provider.HuggingChat,
+                g4f.Provider.HuggingFace,
+                g4f.Provider.AiChatOnline,
+                g4f.Provider.DeepInfra,
+                g4f.Provider.Llama,
+                g4f.Provider.Liaobots,
+                g4f.Provider.MetaAI,
+                g4f.Provider.Hashnode,
+                g4f.Provider.ChatgptFree,
+            ])
+        )
         chat_completion = client.chat.completions.create(
             model=g4f.models.default,
             messages=[{"role": "user", "content": message}],
@@ -76,9 +93,27 @@ def test(query):
         query: {}
         '''.format(query)
         
-        client = Client()
+        client = Client(
+            provider=g4f.Provider.RetryProvider([
+                g4f.Provider.Acytoo,
+                g4f.Provider.You,
+                g4f.Provider.Vercel,
+                g4f.Provider.PerplexityAi,
+                g4f.Provider.PerplexityLabs,
+                g4f.Provider.H2o,
+                g4f.Provider.HuggingChat,
+                g4f.Provider.HuggingFace,
+                g4f.Provider.AiChatOnline,
+                g4f.Provider.DeepInfra,
+                g4f.Provider.Llama,
+                g4f.Provider.Liaobots,
+                g4f.Provider.MetaAI,
+                g4f.Provider.Hashnode,
+                g4f.Provider.ChatgptFree,
+            ])
+        )
         chat_completion = client.chat.completions.create(
-            model="mixtral-8x7b",
+            model=g4f.models.default,
             messages=[{"role": "user", "content": message}],
             stream=True
         )
