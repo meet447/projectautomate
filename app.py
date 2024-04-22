@@ -52,7 +52,7 @@ def web_yt(id):
         
         client = Client()
         chat_completion = client.chat.completions.create(
-            model=g4f.models.default,
+            model="dbrx-instruct",
             messages=[{"role": "user", "content": message}],
             stream=True
         )
@@ -67,8 +67,9 @@ def web_yt(id):
 def test_page(id):
     return render_template("blog.html", id=id)
 
-@app.route("/generate-site/<query>")
-def test(query):
+
+@app.route("/generate-site/<model>/<query>")
+def test(model, query):
     def generate_completion():
         message = '''
         Generate HTML and CSS code for a website based on the provided query, incorporating Bootstrap and JavaScript as needed. Ensure the code represents a complete webpage with all features specified in the query. Avoid creating a basic template; instead, provide the entire page's code. Include CSS and JavaScript within the same HTML document. Omit any additional content or instructions beyond generating the code
@@ -77,7 +78,7 @@ def test(query):
         
         client = Client()
         chat_completion = client.chat.completions.create(
-            model=g4f.models.llama3_70b_instruct,
+            model=model,
             messages=[{"role": "user", "content": message}],
             stream=True
         )
