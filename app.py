@@ -13,6 +13,9 @@ app = Flask(__name__)
 #API ROUTE FOR STREAMING YT TO BLOG STREAM
 @app.route("/api/ytblog/<id>")
 def web_yt(id):
+    
+    model = ""
+    
     def generate_completion():
         
         headers = {
@@ -49,7 +52,7 @@ def web_yt(id):
         
         client = Client()
         chat_completion = client.chat.completions.create(
-            model=g4f.models.codellama_70b_instruct,
+            model=g4f.models.default,
             messages=[{"role": "user", "content": message}],
             stream=True
         )
@@ -65,7 +68,7 @@ def test_page(id):
     return render_template("blog.html", id=id)
 
 @app.route("/generate-site/<query>")
-def test(model, query):
+def test(query):
     def generate_completion():
         message = '''
         Generate HTML and CSS code for a website based on the provided query, incorporating Bootstrap and JavaScript as needed. Ensure the code represents a complete webpage with all features specified in the query. Avoid creating a basic template; instead, provide the entire page's code. Include CSS and JavaScript within the same HTML document. Omit any additional content or instructions beyond generating the code
