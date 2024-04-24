@@ -81,12 +81,19 @@ def webgen_page(query):
         query: {}
         '''.format(query)
         
-
-        chat_completion = client.chat.completions.create(
-            model=g4f.models.default,
+        try:
+            chat_completion = client.chat.completions.create(
+            model=g4f.models.codellama_70b_instruct,
             messages=[{"role": "user", "content": message}],
             stream=True
         )
+        
+        except:
+            chat_completion = client.chat.completions.create(
+                model=g4f.models.default,
+                messages=[{"role": "user", "content": message}],
+                stream=True
+            )
 
         for completion in chat_completion:
             yield completion.choices[0].delta.content or ""
