@@ -7,12 +7,7 @@ import g4f
 
 import g4f.providers
 
-import asyncio
-from asyncio import WindowsSelectorEventLoopPolicy
-
 from youtube.summarise import summarise_youtube
-
-asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())
 
 #IMPORT END
 
@@ -74,12 +69,12 @@ def web_yt(id):
 
 #ROUTE FOR GENERATING SITE BASED ON YT VIDEO
 @app.route("/generate/<id>")
-def web_page(id):
+def ytweb_page(id):
     return render_template("blog.html", id=id)
 
 #ROUTE FOR GENERATING SITE BASED ON QUERY
 @app.route("/generate-site/<path:query>")
-def test(query):
+def webgen_page(query):
     def generate_completion():
         message = '''
         Generate HTML and CSS code for a website based on the provided query, incorporating Bootstrap and JavaScript as needed. Ensure the code represents a complete webpage with all features specified in the query. provide the entire page's code. Make it interactive, Include CSS and JavaScript within the same HTML document. Omit any additional content or instructions beyond generating the code, Only Generate the code do not include anything except code in your response, Do not include something like "Here is the HTML, CSS, and JavaScript code" in your response
