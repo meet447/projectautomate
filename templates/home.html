@@ -14,11 +14,9 @@
             height: 100vh;
             margin: 0;
         }
-
         .input-container {
             text-align: center;
         }
-
         input[type="text"] {
             padding: 15px;
             border-radius: 20px;
@@ -27,7 +25,6 @@
             width: 400px;
             font-size: 18px;
         }
-
         button {
             padding: 8px 20px;
             border-radius: 15px;
@@ -38,7 +35,6 @@
             color: #fff;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #0056b3;
         }
@@ -50,6 +46,12 @@
         <h2>Enter YouTube URL</h2>
         <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL">
         <button onclick="redirectToURL()">Submit</button>
+    </div>
+
+      <div class="input-container">
+        <h2>What Kind Of Web Page do u want to create?</h2>
+        <input type="text" id="website" placeholder="Minimlistic Social Media Landing Page">
+        <button onclick="redirectToWEBL()">Submit</button>
     </div>
 
 
@@ -64,6 +66,11 @@
                 alert("Invalid YouTube URL. Please provide a valid YouTube video URL.");
             }
         }
+  
+        function redirectToWEBL() {
+              var prompt = document.getElementById("website").value;
+              window.location.href = "/generate-site/"+ prompt;
+          }
     </script>
 </body>
 </html>

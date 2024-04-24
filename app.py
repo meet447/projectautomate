@@ -11,9 +11,34 @@ import requests, time
 import random
 import string
 
+import asyncio
+from asyncio import WindowsSelectorEventLoopPolicy
+
+asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())
+
 #IMPORT END
 
 app = Flask(__name__)
+
+client = Client(
+            provider=g4f.Provider.RetryProvider([
+                g4f.Provider.Acytoo,
+                g4f.Provider.You,
+                g4f.Provider.Vercel,
+                g4f.Provider.PerplexityAi,
+                g4f.Provider.PerplexityLabs,
+                g4f.Provider.H2o,
+                g4f.Provider.HuggingChat,
+                g4f.Provider.HuggingFace,
+                g4f.Provider.AiChatOnline,
+                g4f.Provider.DeepInfra,
+                g4f.Provider.Llama,
+                g4f.Provider.Liaobots,
+                g4f.Provider.MetaAI,
+                g4f.Provider.Hashnode,
+                g4f.Provider.ChatgptFree,
+            ])
+        )
 
 #API ROUTE FOR STREAMING YT TO BLOG STREAM
 @app.route("/api/ytblog/<id>")
@@ -59,43 +84,32 @@ def web_yt(id):
         {}
         '''.format(query)
         
-        client = Client(
-            provider=g4f.Provider.RetryProvider([
-                g4f.Provider.Acytoo,
-                g4f.Provider.You,
-                g4f.Provider.Vercel,
-                g4f.Provider.PerplexityAi,
-                g4f.Provider.PerplexityLabs,
-                g4f.Provider.H2o,
-                g4f.Provider.HuggingChat,
-                g4f.Provider.HuggingFace,
-                g4f.Provider.AiChatOnline,
-                g4f.Provider.DeepInfra,
-                g4f.Provider.Llama,
-                g4f.Provider.Liaobots,
-                g4f.Provider.MetaAI,
-                g4f.Provider.Hashnode,
-                g4f.Provider.ChatgptFree,
-            ])
-        )
-        chat_completion = client.chat.completions.create(
-            model=g4f.models.default,
+        try:
+            chat_completion = client.chat.completions.create(
+            model=g4f.models.codellama_70b_instruct,
             messages=[{"role": "user", "content": message}],
             stream=True
         )
+        
+        except:
+            chat_completion = client.chat.completions.create(
+                model=g4f.models.default,
+                messages=[{"role": "user", "content": message}],
+                stream=True
+            )
 
         for completion in chat_completion:
             yield completion.choices[0].delta.content or ""
 
     return Response(generate_completion(), content_type="text/event-stream")
 
-#ROUTE FOR GENERATING SITE
+#ROUTE FOR GENERATING SITE BASED ON YT VIDEO
 @app.route("/generate/<id>")
 def test_page(id):
     return render_template("blog.html", id=id)
 
-
-@app.route("/generate-site/<query>")
+#ROUTE FOR GENERATING SITE BASED ON QUERY
+@app.route("/generate-site/<path:query>")
 def test(query):
     def generate_completion():
         message = '''
@@ -103,25 +117,7 @@ def test(query):
         query: {}
         '''.format(query)
         
-        client = Client(
-            provider=g4f.Provider.RetryProvider([
-                g4f.Provider.Acytoo,
-                g4f.Provider.You,
-                g4f.Provider.Vercel,
-                g4f.Provider.PerplexityAi,
-                g4f.Provider.PerplexityLabs,
-                g4f.Provider.H2o,
-                g4f.Provider.HuggingChat,
-                g4f.Provider.HuggingFace,
-                g4f.Provider.AiChatOnline,
-                g4f.Provider.DeepInfra,
-                g4f.Provider.Llama,
-                g4f.Provider.Liaobots,
-                g4f.Provider.MetaAI,
-                g4f.Provider.Hashnode,
-                g4f.Provider.ChatgptFree,
-            ])
-        )
+
         chat_completion = client.chat.completions.create(
             model=g4f.models.default,
             messages=[{"role": "user", "content": message}],
@@ -134,6 +130,7 @@ def test(query):
     return Response(generate_completion())
 
 
+#ROUTE FOR INDEX    
 @app.route("/")
 def index_page():
    return render_template("home.html")
