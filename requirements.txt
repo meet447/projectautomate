@@ -2,4 +2,3 @@ Gunicorn
 g4f[all]
 Flask[async]
 Requests
-asyncio
