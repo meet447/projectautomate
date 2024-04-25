@@ -13,20 +13,23 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif; /* Added font-family for better readability */
         }
-        .input-container {
+        .container {
             text-align: center;
+            max-width: 600px; /* Added max-width for better responsiveness */
+            padding: 20px;
         }
         input[type="text"] {
-            padding: 15px;
+            padding: 10px;
             border-radius: 20px;
             border: none;
             margin: 10px;
-            width: 400px;
-            font-size: 18px;
+            width: calc(100% - 20px);
+            font-size: 16px;
         }
         button {
-            padding: 8px 20px;
+            padding: 10px 20px;
             border-radius: 15px;
             border: none;
             margin: 10px;
@@ -34,43 +37,41 @@
             background-color: #007bff;
             color: #fff;
             cursor: pointer;
+            transition: background-color 0.3s ease; /* Added transition for smoother hover effect */
         }
         button:hover {
             background-color: #0056b3;
         }
+        h2 {
+            margin-bottom: 20px; /* Added margin for better spacing */
+        }
     </style>
 </head>
 <body>
-    
-    <div class="input-container">
-        <h2>Enter YouTube URL</h2>
-        <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL">
-        <button onclick="redirectToURL()">Submit</button>
-    </div>
 
-      <div class="input-container">
-        <h2>What Kind Of Web Page do u want to create?</h2>
-        <input type="text" id="website" placeholder="Minimlistic Social Media Landing Page">
-        <button onclick="redirectToWEBL()">Submit</button>
-    </div>
+<div class="container">
+    <h2>Enter YouTube URL</h2>
+    <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL">
+    <button onclick="redirectToURL()">Submit</button>
 
+    <h2>Try our new website generation!</h2> <!-- Fixed class name to remove space -->
+    <button onclick="redirectToWEB()">GO NOW!</button> <!-- Corrected function name -->
+</div>
 
-
-    <script>
-        function redirectToURL() {
-            var youtubeUrl = document.getElementById("youtubeUrl").value;
-            var videoId = youtubeUrl.match(/[?&]v=([^&]+)/);
-            if (videoId && videoId.length > 1) {
-                window.location.href = "/generate/"+ videoId[1];
-            } else {
-                alert("Invalid YouTube URL. Please provide a valid YouTube video URL.");
-            }
+<script>
+    function redirectToURL() {
+        var youtubeUrl = document.getElementById("youtubeUrl").value;
+        var videoId = youtubeUrl.match(/[?&]v=([^&]+)/);
+        if (videoId && videoId.length > 1) {
+            window.location.href = "/generate/" + videoId[1];
+        } else {
+            alert("Invalid YouTube URL. Please provide a valid YouTube video URL.");
         }
-  
-        function redirectToWEBL() {
-              var prompt = document.getElementById("website").value;
-              window.location.href = "/generate-site/"+ prompt;
-          }
-    </script>
+    }
+
+    function redirectToWEB() { /* Corrected function name */
+        window.location.href = "/generate-site";
+    }
+</script>
 </body>
 </html>

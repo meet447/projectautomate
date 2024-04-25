@@ -73,11 +73,11 @@ def ytweb_page(id):
     return render_template("blog.html", id=id)
 
 #ROUTE FOR GENERATING SITE BASED ON QUERY
-@app.route("/generate-site/<path:query>")
+@app.route("/api/generate-site/<path:query>")
 def webgen_page(query):
     def generate_completion():
         message = '''
-        Generate HTML and CSS code for a website based on the provided query, incorporating Bootstrap and JavaScript as needed. Ensure the code represents a complete webpage with all features specified in the query. provide the entire page's code. Make it interactive, Include CSS and JavaScript within the same HTML document. Omit any additional content or instructions beyond generating the code, Only Generate the code do not include anything except code in your response, Do not include something like "Here is the HTML, CSS, and JavaScript code" in your response, USE BOOTSTRAP CSS ONLY UNLESS ABOLUTE NEED TO USE CUSTOM CSS !
+        Generate HTML and CSS code for a website based on the provided query, incorporating Bootstrap and JavaScript as needed. Ensure the code represents a complete webpage with all features specified in the query. provide the entire page's code. Make it interactive, Add Nav Bars, Search, Images, Graphs, Table If Neccesary, Include CSS and JavaScript within the same HTML document. Omit any additional content or instructions beyond generating the code, Only Generate the code do not include anything except code in your response, Do not include something like "Here is the HTML, CSS, and JavaScript code" in your response, USE BOOTSTRAP CSS ONLY UNLESS ABOLUTE NEED TO USE CUSTOM CSS !
         query: {}
         '''.format(query)
         
@@ -98,8 +98,11 @@ def webgen_page(query):
         for completion in chat_completion:
             yield completion.choices[0].delta.content or ""
 
-    return Response(generate_completion())
+    return Response(generate_completion() ,content_type="text/event-stream")
 
+@app.route("/generate-site")
+def sitegen_page():
+    return render_template("sitegen.html")
 
 #ROUTE FOR INDEX    
 @app.route("/")
