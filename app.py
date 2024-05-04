@@ -104,7 +104,30 @@ def webgen_page(query):
 def sitegen_page():
     return render_template("sitegen.html")
 
+@app.route("/api/generater/response<path:query>")
+def api_route_bot(query):
+    def generate_completion(): 
+        try:
+            chat_completion = client.chat.completions.create(
+            model=g4f.models.codellama_70b_instruct,
+            messages=[{"role": "user", "content": query}],
+            stream=True
+        )
+        
+        except:
+            chat_completion = client.chat.completions.create(
+                model=g4f.models.default,
+                messages=[{"role": "user", "content": message}],
+                stream=True
+            )
+
+        for completion in chat_completion:
+            yield completion.choices[0].delta.content or ""
+
+    return Response(generate_completion() ,content_type="text/event-stream")
+
 #ROUTE FOR INDEX    
 @app.route("/")
 def index_page():
    return render_template("home.html")
+
