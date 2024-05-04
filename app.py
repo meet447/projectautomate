@@ -104,7 +104,7 @@ def webgen_page(query):
 def sitegen_page():
     return render_template("sitegen.html")
 
-@app.route("/api/generater/response<path:query>")
+@app.route("/api/generater/response/<path:query>")
 def api_route_bot(query):
     def generate_completion(): 
         try:
