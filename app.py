@@ -117,7 +117,7 @@ def api_route_bot(query):
         except:
             chat_completion = client.chat.completions.create(
                 model=g4f.models.default,
-                messages=[{"role": "user", "content": message}],
+                messages=[{"role": "user", "content": query}],
                 stream=True
             )
 
